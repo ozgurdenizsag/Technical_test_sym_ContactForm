@@ -20,27 +20,31 @@ class ContactController extends AbstractController
      */
     public function index(Request $request, Mail $mail): Response
     {
+        //Instenciate object contact to send mail and save on DB
         $contact = new Contact();
-        // ...
 
+        //Creating form to print
         $form = $this->createForm(ContactFormType::class, $contact);
         $form->handleRequest($request);
 
+        //check if the form is sent
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
             $contact->setFirstName($form->get("firstName")->getData())
                 ->setLastName($form->get("lastName")->getData())
                 ->setMail($form->get("mail")->getData())
                 ->setMessage($form->get("message")->getData())
                 ->setDepartmentDestination($form->get("departmentDestination")->getData());
 
+            //Send mail /!\ you need to capture it with mailcatcher -Dev-
+            $mail->sendMail($contact);
+
+            //Save on DB
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($contact);
             $entityManager->flush();
 
-            $mail->sendMail($contact);
+            //Redirect on the same page -unique page for the moment-
             return $this->redirectToRoute('contact');
-
         }
 
         return $this->render('contact/index.html.twig', [
