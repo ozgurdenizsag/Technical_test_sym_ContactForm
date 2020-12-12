@@ -27,11 +27,17 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
             $contact->setFirstName($form->get("firstName")->getData())
                 ->setLastName($form->get("lastName")->getData())
                 ->setMail($form->get("mail")->getData())
                 ->setMessage($form->get("message")->getData())
                 ->setDepartmentDestination($form->get("departmentDestination")->getData());
+
+            $entityManager->persist($contact);
+            $entityManager->flush();
+
             $mail->sendMail($contact);
             return $this->redirectToRoute('contact');
 
