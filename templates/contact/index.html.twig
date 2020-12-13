@@ -10,6 +10,9 @@
             {{ message }}
         </div>
     {% endfor %}
+
+    {{ form_start(form, {'attr': {'onsubmit':"return confirm('Etes vous vraiment sûr ?')"} } ) }}
+
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
