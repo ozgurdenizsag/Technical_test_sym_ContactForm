@@ -4,6 +4,7 @@
     <list default="true" id="360c99f0-e354-4e3a-95ee-17a12ae21f43" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ContactController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ContactController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/contact/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +136,10 @@
       <workItem from="1607785285398" duration="543000" />
       <workItem from="1607785841313" duration="1014000" />
       <workItem from="1607787802653" duration="816000" />
-      <workItem from="1607788781705" duration="273000" />
+      <workItem from="1607788781705" duration="443000" />
+      <workItem from="1607790543073" duration="216000" />
+      <workItem from="1607817970827" duration="49000" />
+      <workItem from="1607824872750" duration="296000" />
     </task>
     <servers />
   </component>
