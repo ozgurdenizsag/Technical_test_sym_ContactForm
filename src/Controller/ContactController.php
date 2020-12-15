@@ -88,7 +88,7 @@ class ContactController extends AbstractController
     }
 
     /**
-     * @Route("/contacts/{id}", name="contactId", , methods={"GET"})
+     * @Route("/contacts/{id}", name="contactId", methods={"GET"})
      */
     public function getContact(ContactRepository $repository, int $id, SerializerInterface $serializer)
     {

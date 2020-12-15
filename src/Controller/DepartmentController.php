@@ -14,7 +14,7 @@ class DepartmentController extends AbstractController
 {
 
     /**
-     * @Route ("/listDepartment", name="listDepartment")
+     * @Route ("/departments/list", name="listDepartment")
      * @param DepartmentRepository $repository
      * @return JsonResponse
      */
