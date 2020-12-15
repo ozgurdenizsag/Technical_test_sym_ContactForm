@@ -1,0 +1,5 @@
+{{ form_start(form, {'attr': {'class': 'js-contact-form','onsubmit':"return confirm('Etes vous vraiment sûr ?')"} } ) }}
+     {{ form_widget(form) }}
+     <!-- <select name="selectDepartment" id="selectDepartment" class="from-control js-select-department"></select> -->
+     <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
+{{ form_end(form) }}

@@ -5,17 +5,16 @@
 {% block body %}
 <div class="container mt-5">
     <h1>Nous contacter</h1>
+
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
-            {{ message }}
+          {{ message }}
         </div>
     {% endfor %}
 
-    {{ form_start(form, {'attr': {'onsubmit':"return confirm('Etes vous vraiment sûr ?')"} } ) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
-    {{ form_end(form) }}
-</div>
 
+     {{ include ('contact/_form.html.twig') }}
+
+</div>
 
 {% endblock %}

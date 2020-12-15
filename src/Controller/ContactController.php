@@ -5,15 +5,21 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Form\ContactFormType;
 use App\Manage\Mail;
+use App\Repository\ContactRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
 {
     /**
-     * @Route("/contact", name="contact")
+     * @Route("/contact", name="contact", methods={"POST"})
      * @param Request $request
      * @param Mail $mail
      * @return Response
@@ -29,11 +35,10 @@ class ContactController extends AbstractController
 
         //check if the form is sent
         if ($form->isSubmitted() && $form->isValid()) {
-            $contact->setFirstName($form->get("firstName")->getData())
-                ->setLastName($form->get("lastName")->getData())
-                ->setMail($form->get("mail")->getData())
-                ->setMessage($form->get("message")->getData())
-                ->setDepartmentDestination($form->get("departmentDestination")->getData());
+
+            //dd($request->getContent());
+            //Get datas
+            $contact = $form->getData();
 
             //Send mail /!\ you need to capture it with mailcatcher -Dev-
             $mail->sendMail($contact);
@@ -46,6 +51,15 @@ class ContactController extends AbstractController
             //Some message to notify the user
             $this->addFlash('success', 'Envoyé avec succès');
 
+            return $this->json(
+                [
+                    "success" => true,
+                    "id" => $contact->getId()
+                ],
+                Response::HTTP_CREATED
+            );
+
+
             //Redirect on the same page -unique page for the moment-
             return $this->redirectToRoute('contact');
         }
@@ -55,4 +69,38 @@ class ContactController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/contacts/list", name="contactsList", methods={"GET"})
+     */
+    public function getContactsList(ContactRepository $repository, SerializerInterface $serializer) : JsonResponse
+    {
+
+        $contactsList = $repository->findAll();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $data = $serializer->normalize($contactsList, 'json',
+            [AbstractNormalizer::ATTRIBUTES => ['id','firstName','lastName','mail', 'message', 'departmentDestination' => ['id','nameDepartment','mailDepartment']]]);
+        return $this->json(
+            $data,
+            200,
+            []
+        );
+    }
+
+    /**
+     * @Route("/contacts/{id}", name="contactId")
+     */
+    public function getContact(ContactRepository $repository, int $id, SerializerInterface $serializer)
+    {
+        $fichecontact = $repository->find($id);
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $data = $serializer->normalize($fichecontact, 'json',
+            [AbstractNormalizer::ATTRIBUTES => ['id','firstName','lastName','mail', 'message', 'departmentDestination' => ['id','nameDepartment','mailDepartment']]]);
+        return $this->json(
+            $data,
+            200,
+            []
+        );
+    }
+
 }
